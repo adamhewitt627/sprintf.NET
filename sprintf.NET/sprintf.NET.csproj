@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
-    <RootNamespace>SprintfNET.Tests</RootNamespace>
+    <RootNamespace>SprintfNET</RootNamespace>
   </PropertyGroup>
 
 </Project>
