@@ -9,4 +9,4 @@ deploy:
   api_key:
     secure: +7xnWj2H6CI1zQJHcbFMDRCJcSn1HYWp2HgKSRGRn5QxmrVhkdgUcddOSsLewFkm
   skip_symbols: true
-  artifact: Sprintf.NET.{appveyor_build_version}.nupkg
+  artifact: /.*\.nupkg/
