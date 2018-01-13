@@ -1,7 +1,7 @@
 version: 1.1.{build}
 image: Visual Studio 2017
 build_script:
-- ps: "Push-Location sprintf.NET\n@(\"x86\",\"x64\",\"ARM\") | ForEach-Object { \n  msbuild -t:Restore,Build -p:Platform=$_,Configuration=Release,TargetFramework=uap10.0,Version=$env:APPVEYOR_BUILD_VERSION }\n\nmsbuild -t:Restore,Build -p:Platform=AnyCPU,Configuration=Release,TargetFramework=netstandard1.4,Version=$env:APPVEYOR_BUILD_VERSION"
+- ps: "Push-Location sprintf.NET\n@(\"x86\",\"x64\",\"ARM\") | ForEach-Object { \n  msbuild -t:Restore,Build -p:Platform=$_,Configuration=Release,TargetFramework=uap10.0,Version=$env:APPVEYOR_BUILD_VERSION }\n\nmsbuild -t:Restore,Build -p:Platform=AnyCPU,Configuration=Release,TargetFramework=netstandard1.4,Version=$env:APPVEYOR_BUILD_VERSION\n\nPop-Location"
 before_deploy:
 - ps: nuget pack -Version $env:APPVEYOR_BUILD_VERSION
 deploy:
