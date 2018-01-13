@@ -1,8 +1,42 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFrameworks>netstandard1.4;uap10.0</TargetFrameworks>
     <RootNamespace>SprintfNET</RootNamespace>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <LangVersion>latest</LangVersion>
+
+    <PackageId>Sprintf.NET</PackageId>
+    <PackageVersion>1.0.2</PackageVersion>
+    <Authors>adamhewitt627</Authors>
+    <Description>Managed wrapper for C-style formatting.</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/adamhewitt627/sprintf.NET</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/adamhewitt627/sprintf.NET/blob/master/LICENSE</PackageLicenseUrl>
+    <!-- <PackageReleaseNotes></PackageReleaseNotes> -->
+    <!-- <Copyright>Copyright 2017 (c) Contoso Corporation. All rights reserved.</Copyright> -->
+    <!-- <PackageTags>logger logging logs</PackageTags> -->
+
+    <!--
+      msbuild -t:Restore,Build,Pack -p:Configuration=Release,IncludeSymbols=true,IncludeSource=true
+      dotnet nuget push .\bin\Release\Sprintf.NET.1.0.0.nupkg -s nuget.org -k a172edc1-02e7-43f1-9478-cab93ee761e3
+    -->
   </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'uap10.0'">
+    <NugetTargetMoniker>UAP,Version=v10.0</NugetTargetMoniker>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
+    <TargetFrameworkIdentifier>.NETCore</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <DefineConstants>$(DefineConstants);WINDOWS_UWP</DefineConstants>
+    <LanguageTargets>$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'uap10.0'">
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform " Version="6.0.6" />
+  </ItemGroup>
+
 
 </Project>
