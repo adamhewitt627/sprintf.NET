@@ -54,7 +54,24 @@ namespace SprintfNET
             });
         }
 
-        #region Native format
+#if UAP
+        private static string swprintf(string format, object arg)
+        {
+            switch (arg)
+            {
+                case int value: return Formatter.Format(format, value);
+                case uint value: return Formatter.Format(format, value);
+                case long value: return Formatter.Format(format, value);
+                case ulong value: return Formatter.Format(format, value);
+                case float value: return Formatter.Format(format, value);
+                case double value: return Formatter.Format(format, value);
+                case char value: return Formatter.Format(format, value);
+                default: throw new NotImplementedException($"Not implemented: {arg?.GetType()}");
+            }
+        }
+
+#else
+
         [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         private static extern int swprintf_s(string result, int maxLength, string format, int value);
         [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
@@ -113,6 +130,6 @@ namespace SprintfNET
                 }
             }
         }
-        #endregion
+#endif
     }
 }
