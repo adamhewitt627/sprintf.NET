@@ -2,6 +2,9 @@
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+#if UAP
+using static sprintfUWP.Formatter;
+#endif
 
 namespace SprintfNET
 {
@@ -54,52 +57,24 @@ namespace SprintfNET
             });
         }
 
-#if UAP
-        private static string swprintf(string format, object arg)
-        {
-            switch (arg)
-            {
-                case int value: return Formatter.Format(format, value);
-                case uint value: return Formatter.Format(format, value);
-                case long value: return Formatter.Format(format, value);
-                case ulong value: return Formatter.Format(format, value);
-                case float value: return Formatter.Format(format, value);
-                case double value: return Formatter.Format(format, value);
-                case char value: return Formatter.Format(format, value);
-                default: throw new NotImplementedException($"Not implemented: {arg?.GetType()}");
-            }
-        }
-
-#else
-
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, int value);
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, uint value);
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, long value);
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, ulong value);
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int _snwprintf_s(string result, int maxLength, int count, string format, double value);
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, double value);
-        private static readonly Lazy<Func<string, int, string, double, int>> @double = new Lazy<Func<string, int, string, double, int>>(() => {
-            try
-            {
-                var i = _snwprintf_s(new string('\0', 8), 8, 8, "%f", 0);
-                return (r, l, f, a) => _snwprintf_s(r, l, l, f, a);
-            }
-            catch { return swprintf_s; }
-        });
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, char value);
-
         private static string swprintf(string format, object arg)
         {
             if (arg is string s) return s;
             if (format == "%@") return string.Format(CultureInfo.InvariantCulture.NumberFormat, "{0}", arg);
 
+#if UAP
+            switch (arg)
+            {
+                case int value: return Format(format, value);
+                case uint value: return Format(format, value);
+                case long value: return Format(format, value);
+                case ulong value: return Format(format, value);
+                case float value: return Format(format, value);
+                case double value: return Format(format, value);
+                case char value: return Format(format, value);
+                default: throw new NotImplementedException($"Not implemented: {arg?.GetType()}");
+            }
+#else
             int res = 0;
             int size = 8;
             string buffer = null;
@@ -129,7 +104,33 @@ namespace SprintfNET
                     default: throw new ArgumentException($"Unsupported format argument: {arg} - Type: {arg?.GetType()}");
                 }
             }
+#endif
         }
+
+
+#if !UAP
+        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int swprintf_s(string result, int maxLength, string format, int value);
+        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int swprintf_s(string result, int maxLength, string format, uint value);
+        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int swprintf_s(string result, int maxLength, string format, long value);
+        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int swprintf_s(string result, int maxLength, string format, ulong value);
+        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int _snwprintf_s(string result, int maxLength, int count, string format, double value);
+        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int swprintf_s(string result, int maxLength, string format, double value);
+        private static readonly Lazy<Func<string, int, string, double, int>> @double = new Lazy<Func<string, int, string, double, int>>(() => {
+            try
+            {
+                var i = _snwprintf_s(new string('\0', 8), 8, 8, "%f", 0);
+                return (r, l, f, a) => _snwprintf_s(r, l, l, f, a);
+            }
+            catch { return swprintf_s; }
+        });
+        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        private static extern int swprintf_s(string result, int maxLength, string format, char value);
 #endif
     }
 }

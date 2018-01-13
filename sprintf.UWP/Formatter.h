@@ -10,7 +10,7 @@ using namespace Platform;
     return ret; \
 }
 
-namespace SprintfNET
+namespace sprintfUWP
 {
     public ref class Formatter sealed
     {
