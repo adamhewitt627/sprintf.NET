@@ -29,8 +29,7 @@
     <file src="sprintf.NET\bin\Release\netstandard1.4\sprintf.NET.dll" target="lib\uap10.0" />
     <file src="sprintf.UWP\Release\sprintf.UWP\sprintfUWP.winmd" target="lib\uap10.0" />
 
-    <file src="sprintf.NET\bin\x86\Release\uap10.0\sprintf.NET.dll" target="ref\uap10.0" />
-    <file src="sprintf.NET\bin\x86\Release\uap10.0\sprintf.NET.pri" target="ref\uap10.0" />
+    <file src="sprintf.NET\bin\Release\netstandard1.4\sprintf.NET.dll" target="ref\uap10.0" />
 
     <file src="sprintf.NET\bin\x86\Release\uap10.0\sprintf.NET.dll" target="runtimes\win10-x86\lib\uap10.0" />
     <file src="sprintf.NET\bin\x64\Release\uap10.0\sprintf.NET.dll" target="runtimes\win10-x64\lib\uap10.0" />
