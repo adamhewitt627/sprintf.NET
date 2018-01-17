@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Sprintf.NET</id>
-    <version>1.0</version>
+    <version>$version$</version>
     <title>Sprintf.NET Native String Formatter</title>
     <authors>adamhewitt627</authors>
     <owners>adamhewitt627</owners>
