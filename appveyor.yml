@@ -9,7 +9,7 @@ dotnet_csproj:
   file_version: '{version}'
   informational_version: '{version}'
 build_script:
-- ps: "Push-Location sprintf.NET\n.\buildNative.ps1\n\ndotnet pack -c release\n\nPop-Location"
+- ps: "Push-Location sprintf.NET\n.\\buildNative.ps1\n\ndotnet pack -c release\n\nPop-Location"
 artifacts:
 - path: '**\*.nupkg'
 deploy:
