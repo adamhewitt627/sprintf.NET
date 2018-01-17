@@ -1,7 +1,15 @@
-version: 1.1.{build}
+version: 1.2.{build}-pre
 image: Visual Studio 2017
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
 build_script:
-- ps: "Push-Location sprintf.NET\n@(\"x86\",\"x64\",\"ARM\") | ForEach-Object { \n  msbuild -t:Restore,Build -p:Platform=$_,Configuration=Release,TargetFramework=uap10.0,Version=$env:APPVEYOR_BUILD_VERSION }\n\nmsbuild -t:Restore,Build -p:Platform=AnyCPU,Configuration=Release,TargetFramework=netstandard1.4,Version=$env:APPVEYOR_BUILD_VERSION\n\nPop-Location\nnuget pack -Version $env:APPVEYOR_BUILD_VERSION"
+- ps: "Push-Location sprintf.NET\n.\buildNative.ps1\n\ndotnet pack -c release\n\nPop-Location"
 artifacts:
 - path: '**\*.nupkg'
 deploy:

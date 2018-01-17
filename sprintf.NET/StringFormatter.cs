@@ -62,19 +62,7 @@ namespace SprintfNET
             if (arg is string s) return s;
             if (format == "%@") return string.Format(CultureInfo.InvariantCulture.NumberFormat, "{0}", arg);
 
-#if UAP
-            switch (arg)
-            {
-                case int value: return Format(format, value);
-                case uint value: return Format(format, value);
-                case long value: return Format(format, value);
-                case ulong value: return Format(format, value);
-                case float value: return Format(format, value);
-                case double value: return Format(format, value);
-                case char value: return Format(format, value);
-                default: throw new NotImplementedException($"Not implemented: {arg?.GetType()}");
-            }
-#else
+            // Console.WriteLine($"IntPtr.Size: {IntPtr.Size}");
             int res = 0;
             int size = 8;
             string buffer = null;
@@ -104,22 +92,21 @@ namespace SprintfNET
                     default: throw new ArgumentException($"Unsupported format argument: {arg} - Type: {arg?.GetType()}");
                 }
             }
-#endif
         }
 
 
-#if !UAP
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        private const string NativeLib = "sprintf-native";
+        [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         private static extern int swprintf_s(string result, int maxLength, string format, int value);
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         private static extern int swprintf_s(string result, int maxLength, string format, uint value);
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         private static extern int swprintf_s(string result, int maxLength, string format, long value);
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         private static extern int swprintf_s(string result, int maxLength, string format, ulong value);
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         private static extern int _snwprintf_s(string result, int maxLength, int count, string format, double value);
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         private static extern int swprintf_s(string result, int maxLength, string format, double value);
         private static readonly Lazy<Func<string, int, string, double, int>> @double = new Lazy<Func<string, int, string, double, int>>(() => {
             try
@@ -129,8 +116,7 @@ namespace SprintfNET
             }
             catch { return swprintf_s; }
         });
-        [DllImport("msvcrt", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
         private static extern int swprintf_s(string result, int maxLength, string format, char value);
-#endif
     }
 }
