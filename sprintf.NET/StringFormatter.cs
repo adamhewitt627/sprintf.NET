@@ -24,7 +24,7 @@ namespace SprintfNET
                                               + @"(?<" + LENGTH + @">[hl]l?)?"
                                               + @"(?<" + TYPE + @">[dioxXucCsfeEgGpn%@])";
 
-        private static readonly Regex STRING_FORMAT_REGEX = new Regex(STRING_REPLACE_PATTERN, RegexOptions.ExplicitCapture);
+        private static readonly Regex STRING_FORMAT_REGEX = new Regex(STRING_REPLACE_PATTERN, RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
         public static string PrintF(string format, params object[] args)
         {
@@ -82,13 +82,13 @@ namespace SprintfNET
             {
                 switch (arg)
                 {
-                    case int i: return () => swprintf_s(buffer, size, format, i);
-                    case uint i: return () => swprintf_s(buffer, size, format, i);
-                    case long i: return () => swprintf_s(buffer, size, format, i);
-                    case ulong i: return () => swprintf_s(buffer, size, format, i);
-                    case double i: return () => swprintf_s(buffer, size, format, i);
-                    case float i: return () => @double.Value(buffer, size, format, i);
-                    case char i: return () => swprintf_s(buffer, size, format, i);
+                    case int i: return () => FormatInt32(buffer, size, format, i);
+                    case uint i: return () => FormatUInt32(buffer, size, format, i);
+                    case long i: return () => FormatInt64(buffer, size, format, i);
+                    case ulong i: return () => FormatUInt64(buffer, size, format, i);
+                    case double i: return () => FormatDouble(buffer, size, format, i);
+                    case float i: return () => FormatDouble(buffer, size, format, i);
+                    case char i: return () => FormatChar(buffer, size, format, i);
                     default: throw new ArgumentException($"Unsupported format argument: {arg} - Type: {arg?.GetType()}");
                 }
             }
@@ -97,26 +97,16 @@ namespace SprintfNET
 
         private const string NativeLib = "sprintf-native";
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, int value);
+        private static extern int FormatInt32(string result, int maxLength, string format, int value);
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, uint value);
+        private static extern int FormatUInt32(string result, int maxLength, string format, uint value);
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, long value);
+        private static extern int FormatInt64(string result, int maxLength, string format, long value);
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, ulong value);
+        private static extern int FormatUInt64(string result, int maxLength, string format, ulong value);
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int _snwprintf_s(string result, int maxLength, int count, string format, double value);
+        private static extern int FormatDouble(string result, int maxLength, string format, double value);
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, double value);
-        private static readonly Lazy<Func<string, int, string, double, int>> @double = new Lazy<Func<string, int, string, double, int>>(() => {
-            try
-            {
-                var i = _snwprintf_s(new string('\0', 8), 8, 8, "%f", 0);
-                return (r, l, f, a) => _snwprintf_s(r, l, l, f, a);
-            }
-            catch { return swprintf_s; }
-        });
-        [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int swprintf_s(string result, int maxLength, string format, char value);
+        private static extern int FormatChar(string result, int maxLength, string format, char value);
     }
 }
