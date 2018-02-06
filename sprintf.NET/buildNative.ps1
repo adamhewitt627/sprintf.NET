@@ -7,7 +7,7 @@ try {
         New-Item $output -ItemType Directory -Force
         $outFile = Join-Path (Get-Location) "$output\$($source.BaseName).dll"
         Write-Host ($options -join " ")
-        cmd /C "`"$vcvarsall`" $architecture & powershell -Command `"&{ cl -LD $($source) -D_ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE=1 -link -appcontainer -dll -out:`"$outFile`" }`""
+        cmd /C "`"$vcvarsall`" $architecture & powershell -Command `"&{ cl -LD $($source) -D_ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE=1 -o `"$outFile`" }`""
     }
 
     build x86
