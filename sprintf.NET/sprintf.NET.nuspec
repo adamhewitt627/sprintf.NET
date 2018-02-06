@@ -33,6 +33,6 @@
     <file src="x64\sprintf-native.dll" target="runtimes\win-x64\lib\netstandard1.4" />
     <file src="bin\Release\netstandard1.4\sprintf.NET.dll" target="runtimes\win-x64\lib\netstandard1.4" />
     <file src="ARM\sprintf-native.dll" target="runtimes\win-arm\lib\netstandard1.4" />
-    <file src="bin\Release\netstandard1.4\sprintf.NET.dll" target="runtimes\win-x64\lib\netstandard1.4" />
+    <file src="bin\Release\netstandard1.4\sprintf.NET.dll" target="runtimes\win-arm\lib\netstandard1.4" />
   </files>
 </package>
