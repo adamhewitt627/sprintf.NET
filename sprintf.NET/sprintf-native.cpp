@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "StrSafe.h"
+#include <stdio.h>
 #include "stdint.h"
 
 #define FORMAT(type, suffix) extern "C" __declspec(dllexport) size_t Format##suffix(wchar_t* buffer, size_t length, wchar_t* format, type value) { \
