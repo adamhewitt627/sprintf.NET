@@ -8,7 +8,7 @@ try {
             Keyword = "WindowsRuntimeComponent"
             AppContainerApplication = "true"
             ApplicationType = "`"Windows Store`""
-            OutDir = "..\sprintf.NET\runtimes\win-$($_.ToLower())\lib\uap10.0\"
+            OutDir = "..\sprintf.NET\runtimes\win10-$($_.ToLower())\native\"
         }
         msbuild -t:Clean,Build -p:(($props.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join ";")
 
