@@ -6,10 +6,31 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <LangVersion>latest</LangVersion>
 
+    <PackageId>Sprintf.NET</PackageId>
     <Version>1.2.0</Version>
-    <NuspecFile>sprintf.NET.nuspec</NuspecFile>
-    <NuspecProperties>version=$(Version)</NuspecProperties>
     <IncludeSymbols>True</IncludeSymbols>
+    <Title>Sprintf.NET Native String Formatter</Title>
+    <Description>Managed wrapper for C-style formatting.</Description>
+    <Authors>adamhewitt627</Authors>
+    <Copyright>Copyright 2018</Copyright>
+    <PackageLicenseUrl>https://github.com/adamhewitt627/sprintf.NET/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/adamhewitt627/sprintf.NET</PackageProjectUrl>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="bin\$(Configuration)\netstandard1.4\sprintf.NET.dll">
+      <Pack>true</Pack>
+      <PackagePath>
+        runtimes/win-x86/lib/netstandard1.4;
+        runtimes/win-x64/lib/netstandard1.4;
+        runtimes/win-arm/lib/uap10.0;
+        runtimes/win-x86/lib/uap10.0;
+        runtimes/win-x64/lib/uap10.0
+      </PackagePath>
+    </None>
+    <None Include="runtimes\**\sprintf-native.dll">
+      <Pack>true</Pack>
+      <PackagePath>runtimes/</PackagePath>
+    </None>
+  </ItemGroup>
 </Project>

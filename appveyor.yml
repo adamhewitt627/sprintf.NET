@@ -9,6 +9,6 @@ dotnet_csproj:
   file_version: '{version}'
   informational_version: '{version}'
 build_script:
-- ps: ".\\sprintf.NET\\buildNative.ps1\ndotnet pack -c release"
+- ps: ".\\sprintf-native\\buildNative.ps1\ndotnet pack -c release"
 artifacts:
 - path: '**\*.nupkg'
