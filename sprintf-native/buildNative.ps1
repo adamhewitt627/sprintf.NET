@@ -23,7 +23,7 @@ try {
         $props = @{ 
             Keyword = "Win32Proj"
             Platform = $_
-            OutDir = "..\sprintf.NET\runtimes\win-$($_.ToLower())\netcoreapp2.0\"
+            OutDir = "..\sprintf.NET\runtimes\win-$($_.ToLower())\native\"
         }
         msbuild -t:Clean,Build -p:(($props.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join ";")
     }

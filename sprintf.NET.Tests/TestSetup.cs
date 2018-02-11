@@ -16,7 +16,7 @@ namespace SprintfNET.Tests
         {
             string @base = System.IO.Path.GetDirectoryName(new Uri(typeof(TestSetup).GetTypeInfo().Assembly.CodeBase).LocalPath),
                 bitness = IntPtr.Size == 8 ? "x64" : "x86",
-                file = $@"runtimes\win-{bitness}\native\sprintf-native.dll";
+                file = $@"{bitness}\sprintf-native.dll";
             var lib = LoadLibrary(System.IO.Path.Combine(@base, file));
         }
     }

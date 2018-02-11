@@ -18,6 +18,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="build\**\*">
+      <Pack>true</Pack>
+      <PackagePath>build/</PackagePath>
+    </None>
     <None Include="runtimes\**\sprintf-native.dll">
       <Pack>true</Pack>
       <PackagePath>runtimes/</PackagePath>

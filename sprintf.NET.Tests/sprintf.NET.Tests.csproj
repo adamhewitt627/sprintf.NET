@@ -11,11 +11,11 @@
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
     <ProjectReference Include="..\sprintf.NET\sprintf.NET.csproj" />
-
-    <Content Include="..\sprintf.NET\**\sprintf-native.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\sprintf.NET\sprintf.NET.csproj" />
+  </ItemGroup>
+  <Import Project="..\sprintf.NET\build\netcoreapp2.0\Sprintf.NET.targets" />
 
 </Project>
