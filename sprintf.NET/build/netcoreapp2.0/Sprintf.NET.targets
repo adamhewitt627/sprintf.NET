@@ -2,7 +2,7 @@
 <Project>
   <!-- https://stackoverflow.com/questions/40104838/automatic-native-and-managed-dlls-extracting-from-nuget-package -->
 
-  <ItemGroup>
+  <!-- <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)..\..\runtimes\win-x86\native\sprintf-native.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>x86\sprintf-native.dll</Link>
@@ -11,6 +11,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>x64\sprintf-native.dll</Link>
     </Content>
-  </ItemGroup>
+  </ItemGroup> -->
 
 </Project>

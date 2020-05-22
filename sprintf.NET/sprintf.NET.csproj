@@ -5,6 +5,8 @@
     <RootNamespace>SprintfNET</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
 
     <PackageId>Sprintf.NET</PackageId>
     <Version>1.2.0</Version>

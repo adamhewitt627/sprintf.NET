@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>SprintfNET.Tests</RootNamespace>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -13,9 +13,17 @@
     <ProjectReference Include="..\sprintf.NET\sprintf.NET.csproj" />
   </ItemGroup>
 
+  <!-- <Import Project="..\sprintf.NET\build\netcoreapp2.0\Sprintf.NET.targets" /> -->
   <ItemGroup>
-    <ProjectReference Include="..\sprintf.NET\sprintf.NET.csproj" />
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libswprintf.so"
+      Condition=" '$(RuntimeIdentifier)' == 'linux-x64' ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\swprintf.dll"
+      Condition=" '$(RuntimeIdentifier)' == 'win-x64' ">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+
   </ItemGroup>
-  <Import Project="..\sprintf.NET\build\netcoreapp2.0\Sprintf.NET.targets" />
 
 </Project>
