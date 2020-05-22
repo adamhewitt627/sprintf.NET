@@ -2,9 +2,6 @@
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-#if UAP
-using static sprintfUWP.Formatter;
-#endif
 
 namespace SprintfNET
 {
