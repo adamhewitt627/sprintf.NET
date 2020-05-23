@@ -39,7 +39,7 @@ namespace SprintfNET
                     default:
                         var @param = match.Groups[PARAMETER];
                         var index = @param.Success
-                            ? int.Parse(@param.Value) - 1
+                            ? int.Parse(@param.Value, CultureInfo.InvariantCulture) - 1
                             : argIndex++;
 
                         //Format string with the parameter stripped
@@ -65,7 +65,8 @@ namespace SprintfNET
         private static unsafe string swprintf(string format, object arg)
         {
             if (arg is string s) return s;
-            if (string.Equals(format, "%@")) return string.Format(CultureInfo.InvariantCulture.NumberFormat, "{0}", arg);
+            if (string.Equals(format, "%@", StringComparison.InvariantCulture)) 
+                return string.Format(CultureInfo.InvariantCulture.NumberFormat, "{0}", arg);
 
             int res = 0;
             int size = 8;

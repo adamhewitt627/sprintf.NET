@@ -1,0 +1,6 @@
+!*.dll
+
+!*.so
+# gcc -c src/swprintf.cpp && gcc -shared swprintf.o -o src/runtimes/linux-x64/native/libswprintf.so
+
+!*.a

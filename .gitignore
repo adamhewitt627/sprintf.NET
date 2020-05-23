@@ -4,5 +4,5 @@ obj
 *.user
 
 *.o
-sprintf-native/*.so
-# gcc -c sprintf-native/swprintf.cpp && gcc -shared swprintf.o -o runtimes/linux-x64/native/libswprintf.so
+*.so
+*nupkg
