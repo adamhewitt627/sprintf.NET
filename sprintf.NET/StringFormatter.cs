@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using static System.Text.Encoding;
 
 namespace SprintfNET
 {
@@ -53,6 +54,13 @@ namespace SprintfNET
                 }
             });
         }
+        
+        private static readonly PlatformID platform = Environment.OSVersion.Platform;
+        private static readonly int CharSize = platform switch
+        {
+            PlatformID.Unix => sizeof(char) * 2,
+            _ => sizeof(char),
+        };
 
         private static unsafe string swprintf(string format, object arg)
         {
@@ -63,31 +71,45 @@ namespace SprintfNET
             int size = 8;
             const int maxSize = 256;
 
-            fixed (char* pointer = format)
+            var fmtSpan = platform switch
             {
-                do
+                PlatformID.Unix => UTF32.GetBytes(format),
+                _ => MemoryMarshal.AsBytes(format.AsSpan()),
+            };
+
+            do
+            {
+                Span<byte> buffer = stackalloc byte[size * CharSize];
+
+                fixed (byte* pbBuffer = &MemoryMarshal.GetReference(buffer))
+                fixed (byte* pbFormat = &MemoryMarshal.GetReference(fmtSpan))
                 {
-                    char* buffer = stackalloc char[size];
                     res = arg switch
                     {
-                        int i => FormatInt32(buffer, size, pointer, i),
-                        uint i => FormatUInt32(buffer, size, pointer, i),
-                        long i => FormatInt64(buffer, size, pointer, i),
-                        ulong i => FormatUInt64(buffer, size, pointer, i),
-                        double i => FormatDouble(buffer, size, pointer, i),
-                        float i => FormatDouble(buffer, size, pointer, i),
-                        char i => FormatChar(buffer, size, pointer, i),
+                        int i => FormatInt32(pbBuffer, size, pbFormat, i),
+                        uint i => FormatUInt32(pbBuffer, size, pbFormat, i),
+                        long i => FormatInt64(pbBuffer, size, pbFormat, i),
+                        ulong i => FormatUInt64(pbBuffer, size, pbFormat, i),
+                        double i => FormatDouble(pbBuffer, size, pbFormat, i),
+                        float i => FormatDouble(pbBuffer, size, pbFormat, i),
+                        char i => FormatChar(pbBuffer, size, pbFormat, i),
                         _ => throw new ArgumentException($"Unsupported format argument: {arg} - Type: {arg?.GetType()}"),
                     };
+                }
 
-                    if (res >= 0)
+
+                if (res >= 0)
+                {
+                    var slice = buffer.Slice(0, res * CharSize);
+                    var result = platform switch
                     {
-                        var result = new string(buffer, 0, res);
-                        return result;
-                    }
+                        PlatformID.Unix => UTF32.GetString(slice),
+                        _ => Unicode.GetString(slice),
+                    };
+                    return result;
+                }
 
-                } while (res < 0 && (size *= 2) <= maxSize);
-            }
+            } while (res < 0 && (size *= 2) <= maxSize);
 
             return string.Empty;
         }
@@ -95,16 +117,16 @@ namespace SprintfNET
 
         private const string NativeLib = "swprintf";
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static unsafe extern int FormatInt32(char* result, int maxLength, char* format, int value);
+        private static unsafe extern int FormatInt32(byte* result, int maxLength, byte* format, int value);
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static unsafe extern int FormatUInt32(char* result, int maxLength, char* format, uint value);
+        private static unsafe extern int FormatUInt32(byte* result, int maxLength, byte* format, uint value);
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static unsafe extern int FormatInt64(char* result, int maxLength, char* format, long value);
+        private static unsafe extern int FormatInt64(byte* result, int maxLength, byte* format, long value);
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static unsafe extern int FormatUInt64(char* result, int maxLength, char* format, ulong value);
+        private static unsafe extern int FormatUInt64(byte* result, int maxLength, byte* format, ulong value);
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static unsafe extern int FormatDouble(char* result, int maxLength, char* format, double value);
+        private static unsafe extern int FormatDouble(byte* result, int maxLength, byte* format, double value);
         [DllImport(NativeLib, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        private static unsafe extern int FormatChar(char* result, int maxLength, char* format, char value);
+        private static unsafe extern int FormatChar(byte* result, int maxLength, byte* format, char value);
     }
 }

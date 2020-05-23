@@ -13,7 +13,6 @@
     <ProjectReference Include="..\sprintf.NET\sprintf.NET.csproj" />
   </ItemGroup>
 
-  <!-- <Import Project="..\sprintf.NET\build\netcoreapp2.0\Sprintf.NET.targets" /> -->
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libswprintf.so"
       Condition=" '$(RuntimeIdentifier)' == 'linux-x64' ">
@@ -23,7 +22,6 @@
       Condition=" '$(RuntimeIdentifier)' == 'win-x64' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-
   </ItemGroup>
 
 </Project>
