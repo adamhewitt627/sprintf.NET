@@ -13,6 +13,5 @@ namespace SprintfNET.Tests
         [DataRow(1.2, "%.1lf", "1.2")]
         public void Format(double value, string format, string expected)
             => Assert.AreEqual(expected, PrintF(format, value));
-
     }
 }

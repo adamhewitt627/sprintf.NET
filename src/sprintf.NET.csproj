@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>SprintfNET</RootNamespace>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Packaging">
+    <PackageId>Sprintf.NET</PackageId>
+    <VersionPrefix>2.0.0</VersionPrefix>
+    <Copyright>Copyright ©$([System.DateTime]::UtcNow.ToString("yyyy"))</Copyright>
+    <Title>Sprintf.NET Native String Formatter</Title>
+    <Description>Managed wrapper for C-style formatting.</Description>
+    <Authors>adamhewitt627</Authors>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="runtimes\**\*" Exclude="**\.*" Pack="true" PackagePath="runtimes/" />
+  </ItemGroup>
+</Project>
