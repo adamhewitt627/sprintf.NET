@@ -1,4 +1,4 @@
-# sprintf.NET   [![Build status](https://ci.appveyor.com/api/projects/status/pkp3ts4lfcyw0akx?svg=true)](https://ci.appveyor.com/project/adamhewitt627/sprintf-net) [![NuGet Status](http://img.shields.io/nuget/v/sprintf.NET.svg?style=flat)](https://www.nuget.org/packages/sprintf.NET/)
+# sprintf.NET   ![.NET Core](https://github.com/adamhewitt627/sprintf.NET/workflows/.NET%20Core/badge.svg?branch=master) [![NuGet Status](http://img.shields.io/nuget/v/sprintf.NET.svg?style=flat)](https://www.nuget.org/packages/sprintf.NET/)
 For many reasons, a .NET developer *should* use [composite formatting](https://docs.microsoft.com/en-us/dotnet/standard/base-types/composite-formatting). (Culture-specific, no P/Invoke cost, string interpolation, etc) However, sometimes it is desirable to have a C-style format string, as when sharing localization strings across platforms.
 
 P/Invoke to `swprintf` is generally sufficient, but:

@@ -14,11 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\libswprintf.so"
+    <Content Include="$(MSBuildThisFileDirectory)..\src\runtimes\linux-x64\native\libswprintf.so"
       Condition=" '$(RuntimeIdentifier)' == 'linux-x64' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\swprintf.dll"
+    <Content Include="$(MSBuildThisFileDirectory)..\src\runtimes\win-x64\native\swprintf.dll"
       Condition=" '$(RuntimeIdentifier)' == 'win-x64' ">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

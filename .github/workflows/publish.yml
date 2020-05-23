@@ -1,9 +1,10 @@
-name: Create Release
+name: Publish to NuGet
 
-on:
+on: 
   push:
-    # tags:
-    #   - 'v*'
+  release:
+    types: 
+      - published
 
 jobs:
   build:
@@ -17,4 +18,6 @@ jobs:
       with:
         dotnet-version: 3.1.101
 
-    # - name: Create Release
+    - name: Test
+      run: dotnet pack --configuration Release --verbosity normal
+  
